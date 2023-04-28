@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weathery/utilities/constants.dart';
 import 'package:weathery/services/weather.dart';
+import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({required this.locationWeather});
@@ -23,20 +24,22 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    if (weatherData == null) {
-      temperature = 0;
-      cityName = "app";
-      weatherIcon = "";
-      weatherMessage = "There's been an error";
-      return;
-    }
-    WeatherModel model = WeatherModel();
-    temperature = weatherData['main']['temp'].toInt();
-    cityName = weatherData['name'];
-    weatherIcon = model.getWeatherIcon(weatherData['weather'][0]['id']);
-    weatherMessage = model.getMessage(temperature);
+    setState(() {
+      if (weatherData == null) {
+        temperature = 0;
+        cityName = "app";
+        weatherIcon = "";
+        weatherMessage = "There's been an error";
+        return;
+      }
+      WeatherModel model = WeatherModel();
+      temperature = weatherData['main']['temp'].toInt();
+      cityName = weatherData['name'];
+      weatherIcon = model.getWeatherIcon(weatherData['weather'][0]['id']);
+      weatherMessage = model.getMessage(temperature);
 
-    print(temperature);
+      print(temperature);
+    });
   }
 
   var currentTime;
@@ -88,7 +91,16 @@ class _LocationScreenState extends State<LocationScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        var selectedCity = await Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CityScreen();
+                        }));
+                        if (selectedCity != null) {
+                          updateUI(
+                              await WeatherModel().getCityData(selectedCity));
+                        }
+                      },
                       child: Icon(
                         Icons.location_city,
                         size: 50.0,

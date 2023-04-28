@@ -2,11 +2,14 @@ import 'location.dart';
 import 'networking.dart';
 
 class WeatherModel {
+  Future<dynamic> getCityData(String selectedCity) async {
+    return await Networker().getCityData(selectedCity);
+  }
+
   Future<dynamic> getweatherData() async {
-    Networker networker = Networker();
     Location location = Location();
     await location.getCurrentLocation();
-    return await networker.getData(location.longitude, location.latitude);
+    return await Networker().getLocData(location.longitude, location.latitude);
   }
 
   String getWeatherIcon(int condition) {
