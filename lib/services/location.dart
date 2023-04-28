@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 class Location {
-  late double latitude; // late yerine nullable da dene
+  late double latitude; // late yerine nullable da denee
   late double longitude;
 
   Future getCurrentLocation() async {
