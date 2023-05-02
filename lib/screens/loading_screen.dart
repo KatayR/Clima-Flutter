@@ -12,12 +12,12 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   initState() {
-    Geolocator.requestPermission();
     readyTheData();
     super.initState();
   }
 
   void readyTheData() async {
+    await Geolocator.requestPermission();
     var weatherData = await WeatherModel().getweatherData();
     if (mounted) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
