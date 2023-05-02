@@ -37,8 +37,6 @@ class _LocationScreenState extends State<LocationScreen> {
       cityName = weatherData['name'];
       weatherIcon = model.getWeatherIcon(weatherData['weather'][0]['id']);
       weatherMessage = model.getMessage(temperature);
-
-      print(temperature);
     });
   }
 
@@ -79,11 +77,8 @@ class _LocationScreenState extends State<LocationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     TextButton(
-                      onPressed: () {
-                        setState(() {
-                          WeatherModel().getweatherData();
-                          print(weatherMessage);
-                        });
+                      onPressed: () async {
+                        updateUI(await WeatherModel().getweatherData());
                       },
                       child: Icon(
                         Icons.near_me,
